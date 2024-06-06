@@ -11,7 +11,7 @@ export class WorkerModel extends Document {
   password: string;
 
   @Prop()
-  name: string;
+  fullName: string;
 
   @Prop([{ type: MongooseSchema.Types.ObjectId, ref: "ShiftModel" }])
   shifts: ShiftModel;

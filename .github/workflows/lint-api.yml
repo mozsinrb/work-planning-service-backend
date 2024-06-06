@@ -1,0 +1,30 @@
+name: Deploy API Develop
+env:
+  NODE_OPTIONS: '--max-old-space-size=4096'
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Lint & install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+      - name: Cache Node modules
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('./yarn.lock') }}
+
+      - name: Install dependencies
+        #        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install --immutable --frozen-lockfile
+
+      - name: Lint code
+        run: yarn lint

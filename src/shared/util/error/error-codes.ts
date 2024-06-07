@@ -4,6 +4,9 @@ export const ERROR_MESSAGES = {
     INVALID_TOKEN: "Invalid or expired authentication token!",
     NO_PERMISSION: "You do not have the necessary permissions to perform this action!",
   },
+  EMAIL: {
+    EMAIL_ALREADY_USED: "This email address is already used!",
+  },
   WORKER: {
     NOT_FOUND: "Worker not found!",
     BAD_CREDENTIALS: "Bad login credentials!",
@@ -19,6 +22,7 @@ export const ERROR_CODES = {
     UNAUTHORIZED: "user.unauthorized",
     BAD_CREDENTIALS: "user.badCredentials",
     NOT_FOUND: "user.notFound",
+    EMAIL_ALREADY_USED: "worker.emailAlreadyUsed",
   },
 };
 

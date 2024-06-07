@@ -6,6 +6,7 @@ export const ERROR_MESSAGES = {
   },
   WORKER: {
     NOT_FOUND: "Worker not found!",
+    BAD_CREDENTIALS: "Bad login credentials!",
   },
 };
 
@@ -16,6 +17,7 @@ export const ERROR_CODES = {
   },
   WORKER: {
     UNAUTHORIZED: "user.unauthorized",
+    BAD_CREDENTIALS: "user.badCredentials",
     NOT_FOUND: "user.notFound",
   },
 };

@@ -1,9 +1,8 @@
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@shared/util/modules/MongooseModule";
-import { WorkerAuthModule } from "@worker/auth/worker-auth.module";
 
 @Module({
-  imports: [MongooseModule, WorkerAuthModule],
-  exports: [MongooseModule, WorkerAuthModule],
+  imports: [MongooseModule],
+  exports: [MongooseModule],
 })
 export class SharedModule {}

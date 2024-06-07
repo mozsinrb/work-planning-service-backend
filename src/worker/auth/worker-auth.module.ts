@@ -4,6 +4,8 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { WorkerModel, WorkerSchema } from "@shared/schemas/worker.schema";
 import { PassportModule } from "@nestjs/passport";
 import { config } from "@shared/config/config";
+import { WorkerJwtStrategy } from "@worker/strategies/worker-jwt.strategy";
+import { WorkerService } from "@worker/services/worker.service";
 
 @Module({
   imports: [
@@ -13,7 +15,7 @@ import { config } from "@shared/config/config";
       secret: config.get("auth.jwtSecret"),
     }),
   ],
-  providers: [],
+  providers: [WorkerJwtStrategy, WorkerService],
   exports: [],
 })
 export class WorkerAuthModule {}

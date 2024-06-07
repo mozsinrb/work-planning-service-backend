@@ -18,7 +18,6 @@ export class WorkerJwtStrategy extends PassportStrategy(Strategy, "worker") {
   }
 
   async validate(payload: any): Promise<WorkerModel> {
-    console.log("STRATEGY ");
     const { userId } = payload;
     const user = await this.workerService.findWorkerById(userId);
     if (!user) {

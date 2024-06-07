@@ -13,14 +13,13 @@ export class WorkerService {
   async createWorker(createWorkerDto: CreateWorkerDto): Promise<WorkerModel> {
     await this.checkIfEmailAlreadyExists(createWorkerDto.email);
 
-    const newWorker = {
+    const newWorker = new this.workerModel({
       password: hashPassword(createWorkerDto.password),
       fullName: createWorkerDto.fullName,
       email: createWorkerDto.email,
-    };
-    const createdUser = new this.workerModel(newWorker);
+    });
 
-    return createdUser.save();
+    return newWorker.save();
   }
 
   async findWorkerById(id: string): Promise<WorkerModel> {

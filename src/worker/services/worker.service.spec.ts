@@ -13,6 +13,7 @@ describe("WorkerService", () => {
   let service: WorkerService;
   let mockSave: jest.Mock;
   let mockWorkerModel: jest.Mock & {
+    find: jest.Mock;
     findOne: jest.Mock;
     findById: jest.Mock;
   };
@@ -32,6 +33,10 @@ describe("WorkerService", () => {
     });
 
     mockWorkerModel.findOne = jest.fn().mockReturnValue({
+      exec: jest.fn().mockResolvedValue(null),
+    });
+
+    mockWorkerModel.find = jest.fn().mockReturnValue({
       exec: jest.fn().mockResolvedValue(null),
     });
 
@@ -130,6 +135,21 @@ describe("WorkerService", () => {
       });
 
       await expect(service.checkIfEmailAlreadyExists("existing@example.com")).rejects.toThrow(ConflictException);
+    });
+
+    it("should return an array of all workers", async () => {
+      mockWorkerModel.find().exec.mockResolvedValue([
+        { id: "1", fullName: "Alice", email: "alice@example.com", shifts: ["1", "2"] },
+        { id: "2", fullName: "Bob", email: "bob@example.com", shifts: ["1", "2"] },
+      ]);
+
+      const result = await service.getAllWorkers();
+      expect(result).toEqual([
+        { id: "1", fullName: "Alice", email: "alice@example.com", shifts: ["1", "2"] },
+        { id: "2", fullName: "Bob", email: "bob@example.com", shifts: ["1", "2"] },
+      ]);
+      expect(mockWorkerModel.find).toBeCalled();
+      expect(mockWorkerModel.find().exec).toBeCalled();
     });
   });
 });

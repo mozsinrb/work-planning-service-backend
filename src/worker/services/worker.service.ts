@@ -45,4 +45,8 @@ export class WorkerService {
       });
     }
   }
+
+  async getAllWorkers(): Promise<WorkerModel[]> {
+    return this.workerModel.find().exec();
+  }
 }

@@ -11,10 +11,10 @@ export class WorkerModel extends Document {
   password: string;
 
   @Prop()
-  name: string;
+  fullName: string;
 
   @Prop([{ type: MongooseSchema.Types.ObjectId, ref: "ShiftModel" }])
-  shifts: ShiftModel;
+  shifts: ShiftModel[];
 }
 
 export const WorkerSchema = SchemaFactory.createForClass(WorkerModel);

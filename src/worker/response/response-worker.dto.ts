@@ -1,4 +1,5 @@
 import { IsArray, IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { ResponseShiftDto } from "../../shift/response/response-shift.dto";
 
 export class ResponseWorkerDto {
   @IsNotEmpty()
@@ -14,6 +15,5 @@ export class ResponseWorkerDto {
 
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  shifts?: string[];
+  shifts?: ResponseShiftDto[];
 }

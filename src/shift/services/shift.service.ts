@@ -5,11 +5,13 @@ import { ShiftModel } from "@shared/schemas/shift.schema";
 import { WorkerService } from "@worker/services/worker.service";
 import { CreateShiftDto } from "../request/create-shift.dto";
 import { ERROR_CODES, ERROR_MESSAGES, STATUS_CODES } from "@shared/util/error/error-codes";
+import { WorkerModel } from "@shared/schemas/worker.schema";
 
 @Injectable()
 export class ShiftService {
   constructor(
     @InjectModel(ShiftModel.name) private shiftModel: Model<ShiftModel>,
+    @InjectModel(WorkerModel.name) private workerModel: Model<WorkerModel>,
     private workerService: WorkerService,
   ) {}
 
@@ -40,7 +42,15 @@ export class ShiftService {
       endHour,
     });
 
-    return newShift.save();
+    const savedShift = await newShift.save();
+
+    await this.workerModel
+      .findByIdAndUpdate(createShiftDto.workerId, {
+        $push: { shifts: savedShift._id },
+      })
+      .exec();
+
+    return savedShift;
   }
 
   async getAllShifts(): Promise<ShiftModel[]> {

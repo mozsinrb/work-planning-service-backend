@@ -23,7 +23,7 @@ export class WorkerService {
   }
 
   async findWorkerById(id: string): Promise<WorkerModel> {
-    const worker = await this.workerModel.findById(id).exec();
+    const worker = await this.workerModel.findById(id).populate("shifts").exec();
     if (!worker) {
       throw new NotFoundException({
         message: ERROR_MESSAGES.WORKER.NOT_FOUND,
@@ -47,6 +47,6 @@ export class WorkerService {
   }
 
   async getAllWorkers(): Promise<WorkerModel[]> {
-    return this.workerModel.find().exec();
+    return this.workerModel.find().populate("shifts").exec();
   }
 }

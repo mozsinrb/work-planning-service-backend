@@ -17,7 +17,7 @@ class IsMongoIdConstraint implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return "workerId must be a valid MongoDB ObjectId";
+    return "id must be a valid MongoDB ObjectId";
   }
 }
 
@@ -46,4 +46,10 @@ export class CreateShiftDto {
   @IsNotEmpty()
   @IsIn([0, 8, 16])
   startHour: number;
+}
+
+export class IdParamDto {
+  @IsMongoId()
+  @IsNotEmpty()
+  id: string;
 }

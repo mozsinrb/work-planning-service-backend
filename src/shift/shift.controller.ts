@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 
 import { ShiftMapper } from "./shift.mapper";
 import { ShiftService } from "./services/shift.service";
-import { CreateShiftDto } from "./request/create-shift.dto";
+import { CreateShiftDto, IdParamDto } from "./request/create-shift.dto";
 import { ResponseShiftDto } from "./response/response-shift.dto";
 import { WorkerAuthGuard } from "@shared/auth/guards/worker-jwt-auth.guard";
 
@@ -24,8 +24,15 @@ export class ShiftController {
   }
 
   @Get(":id")
-  async getShiftById(@Param("id") id: string): Promise<ResponseShiftDto> {
-    const shift = await this.shiftService.getShiftById(id);
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async getShiftById(@Param() params: IdParamDto): Promise<ResponseShiftDto> {
+    const shift = await this.shiftService.getShiftById(params.id);
+    return this.shiftMapper.mapShiftModelShift(shift);
+  }
+
+  @Delete(":id")
+  async deleteShiftById(@Param("id") id: string): Promise<ResponseShiftDto> {
+    const shift = await this.shiftService.deleteShift(id);
     return this.shiftMapper.mapShiftModelShift(shift);
   }
 }

@@ -57,6 +57,25 @@ export class ShiftService {
     return this.shiftModel.find().exec();
   }
 
+  async deleteShift(id: string): Promise<ShiftModel> {
+    const shift = await this.shiftModel.findById(id).exec();
+    if (!shift) {
+      throw new NotFoundException({
+        message: ERROR_MESSAGES.SHIFT.NOT_FOUND,
+        code: ERROR_CODES.SHIFT.NOT_FOUND,
+        status: STATUS_CODES.NOT_FOUND,
+      });
+    }
+
+    await this.workerModel
+      .findByIdAndUpdate(shift.worker, {
+        $pull: { shifts: shift._id },
+      })
+      .exec();
+
+    return this.shiftModel.findByIdAndDelete(id).exec();
+  }
+
   async getShiftById(id: string): Promise<ShiftModel> {
     const shift = await this.shiftModel.findById(id).exec();
     if (!shift) {

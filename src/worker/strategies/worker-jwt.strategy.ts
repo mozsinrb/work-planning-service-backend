@@ -18,8 +18,8 @@ export class WorkerJwtStrategy extends PassportStrategy(Strategy, "worker") {
   }
 
   async validate(payload: any): Promise<WorkerModel> {
-    const { userId } = payload;
-    const user = await this.workerService.findWorkerById(userId);
+    const { workerId } = payload;
+    const user = await this.workerService.findWorkerById(workerId);
     if (!user) {
       throw new UnauthorizedException({
         message: ERROR_MESSAGES.AUTH.INVALID_TOKEN,

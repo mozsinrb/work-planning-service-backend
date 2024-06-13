@@ -5,10 +5,13 @@ import { WorkerModel } from "@shared/schemas/worker.schema";
 @Schema({ timestamps: true })
 export class ShiftModel extends Document {
   @Prop({ required: true })
-  startTime: Date;
+  date: string;
 
   @Prop({ required: true })
-  endTime: Date;
+  startHour: number;
+
+  @Prop({ required: true })
+  endHour: number;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: "WorkerModel" })
   worker: WorkerModel;

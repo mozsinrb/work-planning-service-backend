@@ -65,7 +65,7 @@ describe("WorkerAuthService", () => {
 
     it("should throw UnauthorizedException if password is incorrect", async () => {
       const email = "test@example.com";
-      const password = "wrong password"; // Ensure the password is actually incorrect
+      const password = "wrong password";
 
       await expect(service.login(email, password)).rejects.toThrow(UnauthorizedException);
     });

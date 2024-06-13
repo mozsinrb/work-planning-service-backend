@@ -11,6 +11,10 @@ export const ERROR_MESSAGES = {
     NOT_FOUND: "Worker not found!",
     BAD_CREDENTIALS: "Bad login credentials!",
   },
+  SHIFT: {
+    ALREADY_ASSIGNED: "The shift is already assigned",
+    NOT_FOUND: "Shift not found!",
+  },
 };
 
 export const ERROR_CODES = {
@@ -23,6 +27,10 @@ export const ERROR_CODES = {
     BAD_CREDENTIALS: "user.badCredentials",
     NOT_FOUND: "user.notFound",
     EMAIL_ALREADY_USED: "worker.emailAlreadyUsed",
+  },
+  SHIFT: {
+    ALREADY_ASSIGNED: "shift.alreadyAssigned",
+    NOT_FOUND: "shift.notFound",
   },
 };
 

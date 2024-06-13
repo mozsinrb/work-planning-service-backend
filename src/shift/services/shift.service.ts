@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { ShiftModel } from "@shared/schemas/shift.schema";
@@ -57,13 +57,20 @@ export class ShiftService {
     return this.shiftModel.find().exec();
   }
 
-  async deleteShift(id: string): Promise<ShiftModel> {
+  async deleteShift(id: string, requestingWorkerId: string): Promise<ShiftModel> {
     const shift = await this.shiftModel.findById(id).exec();
     if (!shift) {
       throw new NotFoundException({
         message: ERROR_MESSAGES.SHIFT.NOT_FOUND,
         code: ERROR_CODES.SHIFT.NOT_FOUND,
         status: STATUS_CODES.NOT_FOUND,
+      });
+    }
+
+    if (shift.worker._id.toString() !== requestingWorkerId) {
+      throw new UnauthorizedException({
+        message: "You do not have permission to delete this shift.",
+        status: STATUS_CODES.UNAUTHORIZED,
       });
     }
 
@@ -76,7 +83,7 @@ export class ShiftService {
     return this.shiftModel.findByIdAndDelete(id).exec();
   }
 
-  async getShiftById(id: string): Promise<ShiftModel> {
+  async getShiftById(id: string, requestingWorkerId: string): Promise<ShiftModel> {
     const shift = await this.shiftModel.findById(id).exec();
     if (!shift) {
       throw new NotFoundException({
@@ -85,6 +92,14 @@ export class ShiftService {
         status: STATUS_CODES.NOT_FOUND,
       });
     }
+
+    if (shift.worker._id.toString() !== requestingWorkerId) {
+      throw new UnauthorizedException({
+        message: "You do not have permission to get this shift.",
+        status: STATUS_CODES.UNAUTHORIZED,
+      });
+    }
+
     return shift;
   }
 }

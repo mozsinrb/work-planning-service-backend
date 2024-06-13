@@ -5,6 +5,8 @@ import { ShiftService } from "./services/shift.service";
 import { CreateShiftDto, IdParamDto } from "./request/create-shift.dto";
 import { ResponseShiftDto } from "./response/response-shift.dto";
 import { WorkerAuthGuard } from "@shared/auth/guards/worker-jwt-auth.guard";
+import { CurrentWorker } from "@shared/util/decorators";
+import { WorkerModel } from "@shared/schemas/worker.schema";
 
 @Controller("shifts")
 export class ShiftController {
@@ -23,16 +25,18 @@ export class ShiftController {
     return shifts.map((shift: any) => this.shiftMapper.mapShiftModelShift(shift));
   }
 
+  @UseGuards(WorkerAuthGuard)
   @Get(":id")
   @UsePipes(new ValidationPipe({ transform: true }))
-  async getShiftById(@Param() params: IdParamDto): Promise<ResponseShiftDto> {
-    const shift = await this.shiftService.getShiftById(params.id);
+  async getShiftById(@CurrentWorker() worker: WorkerModel, @Param() params: IdParamDto): Promise<ResponseShiftDto> {
+    const shift = await this.shiftService.getShiftById(params.id, worker.id);
     return this.shiftMapper.mapShiftModelShift(shift);
   }
 
+  @UseGuards(WorkerAuthGuard)
   @Delete(":id")
-  async deleteShiftById(@Param("id") id: string): Promise<ResponseShiftDto> {
-    const shift = await this.shiftService.deleteShift(id);
+  async deleteShiftById(@CurrentWorker() worker: WorkerModel, @Param("id") id: string): Promise<ResponseShiftDto> {
+    const shift = await this.shiftService.deleteShift(id, worker.id);
     return this.shiftMapper.mapShiftModelShift(shift);
   }
 }
